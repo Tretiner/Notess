@@ -13,7 +13,7 @@ public sealed class TodoService(AppDbContext _dbContext)
             .Include(userModel => userModel.TodoItems)
             .FirstOrDefaultAsync(x => x.Id == userId);
 
-        return user?.TodoItems.Select(x => new TodoItem { Id = x.Id, Title = x.Title, Content = x.Content, CreatedDate = x.CreatedDate }).ToList() ?? [];
+        return user?.TodoItems.Select(x => new TodoItem(id: x.Id, title: x.Title, content: x.Content, createdDate: x.CreatedDate)).ToList() ?? [];
     }
 
     public void AddTodo(int userId, TodoItem todoItem)
@@ -43,14 +43,14 @@ public sealed class TodoService(AppDbContext _dbContext)
         if (todoToUpdate is null)
             return;
 
-        todoToUpdate.UserId = userId;
-        todoToUpdate.Id = todoItem.Id;
-        todoToUpdate.Title = todoItem.Title;
-        todoToUpdate.Content = todoItem.Content;
-        todoToUpdate.CreatedDate = todoItem.CreatedDate;
+        todoToUpdate.Title = todoItem.EditTitle;
+        todoToUpdate.Content = todoItem.EditContent;
 
         _dbContext.Todos.Update(todoToUpdate);
         _dbContext.SaveChanges();
+
+        todoItem.Title = todoItem.EditTitle;
+        todoItem.Content = todoItem.EditContent;
     }
 
     private void EnsureUserCreated(int userId)
