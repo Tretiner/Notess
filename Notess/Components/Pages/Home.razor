@@ -1,7 +1,116 @@
 ﻿@page "/"
+@using Notess.Models
+@using Notess.Services
+@rendermode InteractiveServer
+
+@inject TodoService _todoService
+@inject IHttpContextAccessor _httpContextAccessor
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="container align-items-center justify-content-center w-25">
+    <h2>
+        Todo list
+        <small class="text-muted">Count: (@todos.Count)</small>
+    </h2>
 
-Welcome to your new app.
+    <div class="input-group mb-3">
+        <input type="text"
+               class="form-control"
+               placeholder="Todo title"
+               @bind="title" @bind:event="oninput"
+               @onkeydown="@AddTodoWithEnter">
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary"
+                    type="button"
+                    @onclick="AddTodo"
+                    disabled="@IsAddTodoDisabled">
+                Add
+            </button>
+        </div>
+    </div>
+
+    <div class="container d-flex flex-md-column-reverse">
+        @foreach (var todo in todos)
+        {
+            <div class="card mt-3 mb-3 w-100">
+                <div class="card-body d-flex flex-md-column" @onkeydown="@(e => Enter(e, todo))">
+                    <h4 class="card-title mt-2 mb-2" hidden="@todo.IsEditing"
+                        @ondblclick="@todo.ToggleEditing">
+                        @todo.Title
+                    </h4>
+
+                    <label for="title@(todo.Id)" class="form-label" hidden="@(!todo.IsEditing)">Title</label>
+                    <input id="title@(todo.Id)"
+                           class="form-control mb-2"
+                           type="text"
+                           @bind="todo.Title" @bind:event="oninput"
+                           hidden="@(!todo.IsEditing)"/>
+
+                    <h6 class="card-text mt-2 mb-2"
+                        hidden="@todo.IsEditing"
+                        @ondblclick="@todo.ToggleEditing">
+                        @todo.Content
+                    </h6>
+
+                    <label for="content@(todo.Id)" class="form-label" hidden="@(!todo.IsEditing)">Content</label>
+                    <input id="content@(todo.Id)"
+                           class="form-control mb-2"
+                           type="text"
+                           @bind="todo.Content" @bind:event="oninput"
+                           hidden="@(!todo.IsEditing)"/>
+
+                    <div class="d-flex flex-md-row w-100">
+                        <small class="text-muted align-self-start">@todo.CreatedDate</small>
+                        <a href="" @onclick="@(() => RemoveTodo(todo))" style="margin-left: auto">Remove</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+
+    private List<TodoItem> todos = [];
+    private string title = "";
+    private string content = "";
+
+    private bool IsAddTodoDisabled => string.IsNullOrWhiteSpace(title);
+
+    private void AddTodoWithEnter(KeyboardEventArgs e)
+    {
+        if (e.Code is "Enter" or "NumpadEnter")
+        {
+            AddTodo();
+        }
+    }
+
+    private void AddTodo()
+    {
+        if (IsAddTodoDisabled)
+            return;
+
+        var todo = new TodoItem { Title = title, Content = content };
+        AddTodo(todo);
+        todos.Add(todo);
+
+        title = "";
+        content = "";
+    }
+
+    public void Enter(KeyboardEventArgs e, TodoItem todo)
+    {
+        if (todo.IsEditing && e.Code is "Enter" or "NumpadEnter")
+        {
+            todo.ToggleEditing();
+            UpdateTodo(todo);
+        }
+    }
+
+    private void RemoveTodo(TodoItem todo)
+    {
+        RemoveTodo(todo.Id);
+        todos.Remove(todo);
+    }
+}
