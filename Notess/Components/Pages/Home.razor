@@ -9,10 +9,10 @@
 <PageTitle>Home</PageTitle>
 
 <div class="container align-items-center justify-content-center w-25">
-    <h2>
+    <h3>
         Todo list
-        <small class="text-muted">Count: (@todos.Count)</small>
-    </h2>
+        <h4 class="text-muted">count: @todos.Count</h4>
+    </h3>
 
     <div class="input-group mb-3">
         <input type="text"
@@ -21,7 +21,7 @@
                @bind="title" @bind:event="oninput"
                @onkeydown="@AddTodoWithEnter">
         <div class="input-group-append">
-            <button class="btn btn-outline-primary"
+            <button class="btn btn-outline-primary" style="background: #FFFFFF"
                     type="button"
                     @onclick="AddTodo"
                     disabled="@IsAddTodoDisabled">
@@ -33,7 +33,7 @@
     <div class="container d-flex flex-md-column-reverse">
         @foreach (var todo in todos)
         {
-            <div class="card mt-3 mb-3 w-100">
+            <div class="card mt-2 mb-2 w-100">
                 <div class="card-body d-flex flex-md-column" @onkeydown="@(e => OnTodoKeyDown(e, todo))">
                     <h4 class="card-title mt-2 mb-2" hidden="@todo.IsEditing"
                         @ondblclick="@todo.ToggleEditing">
