@@ -1,6 +1,20 @@
+using Microsoft.EntityFrameworkCore;
 using Notess.Components;
+using Notess.Data;
+using Notess.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var dbFilePath = Path.Combine("Data", "Storage", "app.db");
+builder.Services.AddDbContext<AppDbContext>(s =>
+{
+    s.UseSqlite($"Data Source={dbFilePath}");
+    s.EnableSensitiveDataLogging();
+});
+
+builder.Services.AddScoped<TodoService>();
+
+builder.Services.AddHttpContextAccessor();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
