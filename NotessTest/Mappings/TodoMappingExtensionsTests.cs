@@ -2,10 +2,16 @@ using Notess.Data.Tables;
 using Notess.Mappings;
 using Notess.Models;
 
-namespace Notess.Test.Mappings;
+namespace NotessTest.Mappings;
 
+/// <summary>
+/// Contains unit tests for the TodoMappingExtensions class.
+/// </summary>
 public class TodoMappingExtensionsTests
 {
+    /// <summary>
+    /// Tests that the ToTodoItem extension method correctly maps from a TodoModel.
+    /// </summary>
     [Fact]
     public void ToTodoItem_MapsFromTodoModel()
     {
@@ -22,6 +28,9 @@ public class TodoMappingExtensionsTests
         Assert.Equal(todoModel.CreatedDate, todoItem.CreatedDate);
     }
 
+    /// <summary>
+    /// Tests that the ToTodoModel extension method correctly maps from a TodoItem.
+    /// </summary>
     [Fact]
     public void ToTodoModel_MapsFromTodoItem()
     {

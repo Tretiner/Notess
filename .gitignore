@@ -6,7 +6,7 @@ riderModule.iml
 ## Project sources
 
 # database
-app.db
+app.db*
 
 # doxygen
 doxydoc/

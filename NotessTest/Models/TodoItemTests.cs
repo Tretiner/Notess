@@ -1,9 +1,15 @@
 using Notess.Models;
 
-namespace Notess.Test.Models;
+namespace NotessTest.Models;
 
+/// <summary>
+/// Contains unit tests for the TodoItem class.
+/// </summary>
 public class TodoItemTests
 {
+    /// <summary>
+    /// Tests that the ToggleEditing method sets the editing state and copies values correctly.
+    /// </summary>
     [Fact]
     public void ToggleEditing_SetsEditingStateAndCopiesValues()
     {
@@ -19,6 +25,9 @@ public class TodoItemTests
         Assert.Equal(todoItem.Content, todoItem.EditContent);
     }
 
+    /// <summary>
+    /// Tests that the ToString method returns the expected string representation of the todo item.
+    /// </summary>
     [Fact]
     public void ToString_ReturnsExpectedString()
     {

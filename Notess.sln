@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notess", "Notess\Notess.csproj", "{D1D87A85-6EF3-4C8E-BC2A-B892E62559A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notess.Test", "Notess.Test\Notess.Test.csproj", "{C77E16C5-2199-4438-826C-22DB834911BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotessTest", "NotessTest\NotessTest.csproj", "{C77E16C5-2199-4438-826C-22DB834911BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
