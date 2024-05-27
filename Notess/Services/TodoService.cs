@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Notess.Data;
 using Notess.Data.Tables;
+using Notess.Mappings;
 using Notess.Models;
 
 namespace Notess.Services;
@@ -32,7 +33,7 @@ public sealed class TodoService
             .Include(userModel => userModel.TodoItems)
             .FirstOrDefaultAsync(x => x.Id == userId);
 
-        return user?.TodoItems.Select(x => new TodoItem(id: x.Id, title: x.Title, content: x.Content, createdDate: x.CreatedDate)).ToList() ?? [];
+        return user?.TodoItems.Select(x => x.ToTodoItem()).ToList() ?? [];
     }
 
     /// <summary>
@@ -44,13 +45,7 @@ public sealed class TodoService
     {
         EnsureUserCreated(userId);
 
-        var todoModel = new TodoModel
-        {
-            UserId = userId,
-            Title = todoItem.Title,
-            Content = todoItem.Content,
-            CreatedDate = todoItem.CreatedDate
-        };
+        var todoModel = todoItem.ToTodoModel(userId);
 
         _dbContext.Todos.Add(todoModel);
         _dbContext.SaveChanges();
@@ -101,7 +96,7 @@ public sealed class TodoService
     /// Ensures that a user with the specified ID exists in the database.
     /// </summary>
     /// <param name="userId">The ID of the user to be created.</param>
-    private void EnsureUserCreated(int userId)
+    protected void EnsureUserCreated(int userId)
     {
         if (_dbContext.Users.FirstOrDefault(x => x.Id == userId) == null)
             _dbContext.Users.Add(new UserModel { Id = userId });

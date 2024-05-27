@@ -9,6 +9,15 @@ namespace Notess.Data.Tables;
 [Table("Todos")]
 public sealed record TodoModel
 {
+    public TodoModel(int userId, int id, string title, string content, DateTime createdDate)
+    {
+        UserId = userId;
+        Id = id;
+        Title = title;
+        Content = content;
+        CreatedDate = createdDate;
+    }
+
     /// <summary>
     /// The unique identifier of the todo item.
     /// </summary>

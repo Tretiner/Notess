@@ -24,5 +24,5 @@ public sealed class UserModel
     /// <summary>
     /// The collection of todo items associated with the user.
     /// </summary>
-    public ICollection<TodoModel> TodoItems { get; }
+    public ICollection<TodoModel> TodoItems { get; set; }
 }

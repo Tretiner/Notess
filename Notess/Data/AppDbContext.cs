@@ -6,7 +6,7 @@ namespace Notess.Data;
 /// <summary>
 /// Represents the application's database context.
 /// </summary>
-public sealed class AppDbContext : DbContext
+public class AppDbContext : DbContext
 {
     /// <summary>
     /// Gets or sets the DbSet of UserModels in the database.
@@ -19,7 +19,12 @@ public sealed class AppDbContext : DbContext
     public DbSet<TodoModel> Todos { get; set; } = null!;
 
     /// <summary>
-    /// Initializes a new instance of the AppDbContext class with the specified options.
+    /// Initializes a new instance of the AppDbContext
+    /// </summary>
+    public AppDbContext() { }
+
+    /// <summary>
+    /// Initializes a new instance of the AppDbContext class with the specified options
     /// </summary>
     /// <param name="options">The DbContextOptions for the database context.</param>
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
