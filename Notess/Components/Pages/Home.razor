@@ -11,14 +11,14 @@
 <div class="container align-items-center justify-content-center w-25">
     <h3>
         Todo list
-        <h4 class="text-muted">count: @todos.Count</h4>
+        <h4 class="text-muted">count: @Todos.Count</h4>
     </h3>
 
     <div class="input-group mb-3">
         <input type="text"
                class="form-control"
                placeholder="Todo title"
-               @bind="title" @bind:event="oninput"
+               @bind="Title" @bind:event="oninput"
                @onkeydown="@AddTodoWithEnter">
         <div class="input-group-append">
             <button class="btn btn-outline-primary" style="background: #FFFFFF"
@@ -31,7 +31,7 @@
     </div>
 
     <div class="container d-flex flex-md-column-reverse">
-        @foreach (var todo in todos)
+        @foreach (var todo in Todos)
         {
             <div class="card mt-2 mb-2 w-100">
                 <div class="card-body d-flex flex-md-column" @onkeydown="@(e => OnTodoKeyDown(e, todo))">
@@ -72,12 +72,26 @@
 </div>
 
 @code {
-    private List<TodoItem> todos = [];
-    private string title = "";
-    private string content = "";
 
-    private bool IsAddTodoDisabled => string.IsNullOrWhiteSpace(title);
+    /// <summary>
+    /// A list of todo items.
+    /// </summary>
+    private List<TodoItem> Todos { get; set; } = [];
 
+    /// <summary>
+    /// The title of the current todo item.
+    /// </summary>
+    private string Title { get; set; } = "";
+
+    /// <summary>
+    /// Indicates whether adding a new todo item is disabled.
+    /// </summary>
+    private bool IsAddTodoDisabled => string.IsNullOrWhiteSpace(Title);
+
+    /// <summary>
+    /// Handles the "Enter" key press event to add a new todo item.
+    /// </summary>
+    /// <param name="e">The keyboard event arguments.</param>
     private void AddTodoWithEnter(KeyboardEventArgs e)
     {
         if (e.Code is "Enter" or "NumpadEnter")
@@ -86,19 +100,27 @@
         }
     }
 
+    /// <summary>
+    /// Adds a new todo item to the list.
+    /// </summary>
     private void AddTodo()
     {
         if (IsAddTodoDisabled)
             return;
 
-        var todo = new TodoItem(title: title, content: content);
-        AddTodo(todo);
-        todos.Add(todo);
+        var todo = new TodoItem(title: Title);
 
-        title = "";
-        content = "";
+        AddTodo(todo);
+        Todos.Add(todo);
+
+        Title = "";
     }
 
+    /// <summary>
+    /// Handles the key down event for a todo item.
+    /// </summary>
+    /// <param name="e">The keyboard event arguments.</param>
+    /// <param name="todo">The todo item that the event is associated with.</param>
     public void OnTodoKeyDown(KeyboardEventArgs e, TodoItem todo)
     {
         if (!todo.IsEditing)
@@ -114,9 +136,14 @@
         }
     }
 
+    /// <summary>
+    /// Removes a todo item from the list.
+    /// </summary>
+    /// <param name="todo">The todo item to be removed.</param>
     private void RemoveTodo(TodoItem todo)
     {
         RemoveTodo(todo.Id);
-        todos.Remove(todo);
+        Todos.Remove(todo);
     }
+
 }
